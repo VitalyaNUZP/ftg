@@ -1,7 +1,5 @@
 #   Coded edit vitalyatroz #
 #     t.me/vitalyatroz     #
-
-
 # Слава Україні! Героям слава!
 
 from .. import loader, utils
