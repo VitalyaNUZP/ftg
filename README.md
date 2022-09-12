@@ -1,0 +1,2 @@
+# ftg
+FTG Friendly Module
