@@ -2,7 +2,6 @@
 #     t.me/vitalyatroz     #
 
 # Слава Україні! Героям слава!
-
 # requires: Pillow | pip install pillow
 
 import io
