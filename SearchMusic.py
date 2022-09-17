@@ -12,10 +12,11 @@
 # ---------------------------------------------------------------------------------
 # Name: SearchMusic
 # Description: Модуль SearchMusic - поиск музыки
-# Работает через бота @lybot а також @vkmusic_bot
+# Работает через бота @vkmusic_bot, а також @lybot и @vkmusbot
 # Author: SekaiYoneya
+# Edit: @vitalyatroz
 # Commands:
-# .sm / .s
+# .sm / .sm2 / .sm3 - поиск музыки по разным ботам
 # ---------------------------------------------------------------------------------
 
 # @Sekai_Yoneya / @vitalyatroz
@@ -27,13 +28,34 @@ from .. import loader, utils
 class SearchMusicMod(loader.Module):
     """
     Модуль SearchMusic - поиск музыки
-    Работает через бота @lybot а також @vkmusic_bot
+    Работает через бота @vkmusic_bot, @lybot и @vkmusbot
     """
 
-    strings = {"name": "SM by @vitalyatroz"}
+    strings = {"name": "SearchMusic"}
 
     async def smcmd(self, message):
-        """Используй: .sm «название» чтобы найти музыку по названию."""
+        """ - «название» чтобы найти музыку в @vkmusic_bot."""
+        args = utils.get_args_raw(message)
+        reply = await message.get_reply_message()
+        if not args:
+            return await message.edit("<b>Нету аргументов.</b>")
+        try:
+            await message.edit("<b>Загрузка...</b>")
+            music = await message.client.inline_query("vkmusic_bot", args)
+            await message.delete()
+            await message.client.send_file(
+                message.to_id,
+                music[0].result.document,
+                reply_to=reply.id if reply else None,
+            )
+        except:
+            return await message.client.send_message(
+                message.chat_id,
+                f"<b>Музыка с названием <code>{args}</code> не найдена.</b>",
+            )
+    
+    async def sm2cmd(self, message):
+        """ - «название» чтобы найти музыку в @lybot."""
         args = utils.get_args_raw(message)
         reply = await message.get_reply_message()
         if not args:
@@ -52,15 +74,16 @@ class SearchMusicMod(loader.Module):
                 message.chat_id,
                 f"<b>Музыка с названием <code>{args}</code> не найдена.</b>",
             )
-     async def scmd(self, message):
-        """Використовуй: .s «назва» щоб знайти музику по назві."""
+    
+    async def sm3cmd(self, message):
+        """ - «название» чтобы найти музыку в @vkmusbot."""
         args = utils.get_args_raw(message)
         reply = await message.get_reply_message()
         if not args:
-            return await message.edit("<b>Немає аргументів.</b>")
+            return await message.edit("<b>Нету аргументов.</b>")
         try:
-            await message.edit("<b>Завантаження...</b>")
-            music = await message.client.inline_query("vkmusic_bot", args)
+            await message.edit("<b>Загрузка...</b>")
+            music = await message.client.inline_query("vkmusbot", args)
             await message.delete()
             await message.client.send_file(
                 message.to_id,
@@ -68,8 +91,8 @@ class SearchMusicMod(loader.Module):
                 reply_to=reply.id if reply else None,
             )
         except:
-            return await message.client.send_message
+            return await message.client.send_message(
                 message.chat_id,
-                f"<b>Музика з назвою <code>{args}</code> не знайдена.</b>",
+                f"<b>Музыка с названием <code>{args}</code> не найдена.</b>",
             )
-            
+
