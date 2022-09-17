@@ -14,11 +14,9 @@ class EyeOfGodMod(loader.Module):
     try:
       await message.client.send_message(2064606507, "<code>#id</code>" + str(reply.sender.id))
       await asyncio.sleep(2) 
-      await asyncio.sleep(3)
-      await asyncio.sleep(4)
       messages = await message.client.get_messages('Telegram')
       messages[0].click()
-      await asyncio.sleep(5)
+      await asyncio.sleep(2)
       messages2 = await message.client.get_messages(2064606507)
       await message.edit(str(messages2[0].message))
     except Exception as ex:
@@ -32,11 +30,9 @@ class EyeOfGodMod(loader.Module):
     try:
       await message.client.send_message(2064606507, str(args))
       await asyncio.sleep(2) 
-      await asyncio.sleep(3)
-      await asyncio.sleep(4)
       messages = await message.client.get_messages('Telegram')
       messages[0].click()
-      await asyncio.sleep(5)
+      await asyncio.sleep(2)
       messages2 = await message.client.get_messages(2064606507)
       await message.edit(str(messages2[0].message))
     except Exception as ex:
