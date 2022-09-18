@@ -6,6 +6,7 @@
   \ \__,_|_|  |_|_|_| |_|\___|\___|_|  \__,_|_|  \__|  |_| |_.__/ \__,_|_.__/|_|\___||___/
    \____/
 """
+#добавить возможность пересылвать сообщения не только из @air_alert_ua, а из любого канала
 from .. import loader, utils
 
 def register(cb):
@@ -26,7 +27,8 @@ class PosterMod(loader.Module):
 
     def __init__(self):
         self.config = loader.ModuleConfig(
-            'Channel', 'Нужен ID канала', lambda: 'Канал, в которий идёт постинг.')
+            'Channel', 'Нужен ID канала', lambda: 'Канал, в которий идёт постинг.',
+            'Chat', 'Нужен ID чата', lambda: 'Чат, в который идёт постинг.')
 
     @loader.unrestricted
     async def postcmd(self, message):
@@ -85,3 +87,22 @@ class PosterMod(loader.Module):
                 await message.edit(self.strings['NoReplyOrMedia'])
         else:
             await message.edit(self.strings['NoReplyOrMedia'])
+#
+    async def post1cmd(self, message):
+        """<ID канала> <ID чата>
+
+
+        👨‍💻Made by: @Minecraft4babies_GFTG_Modules"""
+        args = utils.get_args_raw(message)
+        args = args.split()
+        reply = await message.get_reply_message()
+        if len(args) == 2:
+            await message.edit('<code>[Poster]</code><b>Оформление...</b>')
+            pgf = message.client.get_messages(int(args[0]), limit=1)
+            try:
+                await message.client.send_message(int(args[1]), file=pgf.media, reply_to=reply)
+                await message.delete()
+            except:
+                await message.edit('<code>[Poster]</code><b>Произошла ошибка.</b>')
+        else:
+            await message.edit('<code>[Poster]</code><b>Неверное количество аргументов.</b>')
